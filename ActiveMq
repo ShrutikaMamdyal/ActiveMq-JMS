@@ -1,0 +1,111 @@
+https://www.alibabacloud.com/blog/how-to-install-apache-activemq-on-ecs-ubuntu-18-04_595709
+
+UBUNTU : https://www.vultr.com/docs/install-apache-activemq-on-ubuntu-20-04/
+
+#######https://activemq.apache.org/web-console
+
+STEPS:
+
+//Download
+1. $ wget http://archive.apache.org/dist/activemq/5.16.3/apache-activemq-5.16.3-bin.tar.gz
+
+//Extract 
+2. sudo tar -xvzf apache-activemq-5.16.3-bin.tar.gz
+
+// Create Folder
+3. $ sudo mkdir /opt/activemq
+
+// Move extr files to /opt/activemq
+4. $ sudo mv apache-activemq-5.16.3/* /opt/activemq
+
+// TO run apache activemq create gourp 
+5. sudo addgroup --quiet --system activemq
+
+// Create username and password (activemq - activemq)
+6. $ sudo adduser --quiet --system --ingroup activemq --no-create-home --disabled-password activemq
+
+// permission to user activemq
+7. $ sudo chown -R activemq:activemq /opt/activemq
+
+8. $ sudo nano /etc/systemd/system/activemq.service
+open service file 
+------------------------------------------
+[Unit]
+
+Description=Apache ActiveMQ
+
+After=network.target
+
+[Service]
+
+Type=forking
+
+User=activemq
+
+Group=activemq
+
+
+
+ExecStart=/opt/activemq/bin/activemq start
+
+ExecStop=/opt/activemq/bin/activemq stop
+
+
+
+[Install]
+
+WantedBy=multi-user.target
+
+-------------------------------------------
+
+// Can Change host IP adress default: 
+// <property name="host" value="127.0.0.1"/>
+9. $ sudo nano /opt/activemq/conf/jetty.xml
+
+10. $ sudo systemctl daemon-reload
+
+
+$ sudo systemctl start activemq
+
+
+$ sudo systemctl enable activemq
+
+$ sudo systemctl status activemq
+
+$ sudo systemctl restart activemq
+
+$ sudo systemctl restart activemq
+
+
+nano /opt/activemq/conf/activemq.xml    ///can edit storage limit etc
+netstat -naptu | grep 61616   //default port/admin port
+
+http://127.0.0.1:8161/admin/
+
+
+$ sudo nano /opt/activemq/conf/jetty-realm.properties.
+
+$ sudo  /opt/activemq/bin/activemq producer
+
+$ sudo  /opt/activemq/bin/activemq bstat 
+
+$ sudo  /opt/activemq/bin/activemq consumer
+
+
+
+//Change Password
+$ sudo nano /opt/activemq/conf/jetty-realm.properties
+admin: Shrutika@123, admin
+user: Shrutika@User, user
+
+ /opt/apache-activemq-5.16.3/bin/activemq start
+
+
+Commands on putty:
+
+ wget https://archive.apache.org/dist/activemq/5.16.3/apache-activemq-5.16     
+ tar -xzf apache-activemq-5.16.3-bin.tar.gz
+ sudo mv apache-activemq-5.16.3 /opt/
+ export ACTIVEMQ_HOME=/opt/apache-activemq-5.16.3
+ source ~/.bashrc
+ $ACTIVEMQ_HOME/bin/activemq start 
